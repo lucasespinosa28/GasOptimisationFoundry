@@ -184,11 +184,6 @@ contract GasContract is Ownable {
         balances[senderOfTx] -= _amount;
         balances[_recipient] += _amount;
         emit Transfer(_recipient, _amount);
-        // History memory history = History({
-        //     blockNumber: block.number,
-        //     lastUpdate: block.timestamp,
-        //     updatedBy: _updateAddress
-        // });
         Payment memory payment = Payment({
             admin: address(0),
             adminUpdated: false,
@@ -253,25 +248,9 @@ contract GasContract is Ownable {
             _tier < 255,
             "Gas Contract - addToWhitelist function -  tier level should not be greater than 255"
         );
-        if (_tier > 3) {
-            whitelist[_userAddrs] = 3;
-        } else if (_tier == 1) {
-            whitelist[_userAddrs] = 1;
-        } else if (_tier > 0 && _tier < 3) {
-            whitelist[_userAddrs] = 2;
-        } else {
-            whitelist[_userAddrs] = _tier;
-        }
-        uint256 wasLastAddedOdd = wasLastOdd;
-        if (wasLastAddedOdd == 1) {
-            wasLastOdd = 0;
-            isOddWhitelistUser[_userAddrs] = wasLastAddedOdd;
-        } else if (wasLastAddedOdd == 0) {
-            wasLastOdd = 1;
-            isOddWhitelistUser[_userAddrs] = wasLastAddedOdd;
-        } else {
-            revert("Contract hacked, imposible, call help");
-        }
+        whitelist[_userAddrs] = (_tier > 3) ? 3 : _tier;
+        wasLastOdd = wasLastOdd ^ 1;
+        isOddWhitelistUser[_userAddrs] = wasLastOdd;
         emit AddedToWhitelist(_userAddrs, _tier);
     }
 
