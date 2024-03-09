@@ -132,9 +132,8 @@ contract GasContract is Ownable {
         return paymentHistory;
     }
 
-    function balanceOf(address _user) public view returns (uint256 balance_) {
-        uint256 balance = balances[_user];
-        return balance;
+     function balanceOf(address _user) public view returns (uint256 balance_) {
+        return balances[_user];
     }
 
     function checkForAdmin(address _user) public view returns (bool admin_) {
@@ -146,8 +145,6 @@ contract GasContract is Ownable {
         }
         return admin;
     }
-
-    
 
     function getTradingMode() public pure returns (bool mode_) {
         bool mode = false;
