@@ -1,41 +1,41 @@
 Compiling 2 files with 0.8.0
-Solc 0.8.0 finished in 2.60s
+Solc 0.8.0 finished in 3.57s
 Compiler run [32msuccessful![0m
 
 Ran 16 tests for test/Gas.UnitTests.t.sol:GasTest
 [32m[PASS][0m testAddHistory() (gas: 233)
-[32m[PASS][0m testAddToWhitelist(address,uint256) (runs: 256, μ: 47701, ~: 47693)
+[32m[PASS][0m testAddToWhitelist(address,uint256) (runs: 256, μ: 47737, ~: 47693)
 [32m[PASS][0m testBalanceOf() (gas: 12313)
 [32m[PASS][0m testCheckForAdmin() (gas: 19660)
 [32m[PASS][0m testGetPaymentHistory() (gas: 212)
 [32m[PASS][0m testGetPaymentStatus(address) (runs: 256, μ: 344, ~: 344)
 [32m[PASS][0m testGetTradingMode() (gas: 210)
-[32m[PASS][0m testTransfer(uint256,address) (runs: 256, μ: 238196, ~: 241447)
-[32m[PASS][0m testWhiteTranferAmountUpdate(address,address,uint256,string,uint256) (runs: 256, μ: 420059, ~: 420411)
+[32m[PASS][0m testTransfer(uint256,address) (runs: 256, μ: 237538, ~: 241447)
+[32m[PASS][0m testWhiteTranferAmountUpdate(address,address,uint256,string,uint256) (runs: 256, μ: 420065, ~: 420428)
 [32m[PASS][0m test_admins() (gas: 36302)
-[32m[PASS][0m test_onlyOwner(address,uint256) (runs: 256, μ: 49312, ~: 49302)
-[32m[PASS][0m test_tiers(address,uint256) (runs: 256, μ: 80007, ~: 79551)
-[32m[PASS][0m test_tiersReverts(address,uint256) (runs: 256, μ: 47431, ~: 47455)
-[32m[PASS][0m test_whitelistEvents(address,address,uint256,string,uint256) (runs: 256, μ: 407541, ~: 411372)
-[32m[PASS][0m test_whitelistEvents(address,uint256) (runs: 256, μ: 82577, ~: 81845)
-[32m[PASS][0m test_whitelistTransfer(address,address,uint256,string,uint256) (runs: 256, μ: 406786, ~: 411380)
-Suite result: [32mok[0m. [32m16[0m passed; [31m0[0m failed; [33m0[0m skipped; finished in 528.66ms (2.01s CPU time)
+[32m[PASS][0m test_onlyOwner(address,uint256) (runs: 256, μ: 49317, ~: 49320)
+[32m[PASS][0m test_tiers(address,uint256) (runs: 256, μ: 80335, ~: 79551)
+[32m[PASS][0m test_tiersReverts(address,uint256) (runs: 256, μ: 47425, ~: 47437)
+[32m[PASS][0m test_whitelistEvents(address,address,uint256,string,uint256) (runs: 256, μ: 408000, ~: 411550)
+[32m[PASS][0m test_whitelistEvents(address,uint256) (runs: 256, μ: 82766, ~: 81845)
+[32m[PASS][0m test_whitelistTransfer(address,address,uint256,string,uint256) (runs: 256, μ: 407545, ~: 411334)
+Suite result: [32mok[0m. [32m16[0m passed; [31m0[0m failed; [33m0[0m skipped; finished in 1.54s (5.50s CPU time)
 | src/Gas.sol:GasContract contract |                 |        |        |        |         |
 |----------------------------------|-----------------|--------|--------|--------|---------|
 | Deployment Cost                  | Deployment Size |        |        |        |         |
 | 2733424                          | 12571           |        |        |        |         |
 | Function Name                    | min             | avg    | median | max    | # calls |
-| addToWhitelist                   | 35253           | 66646  | 85177  | 85321  | 8       |
+| addToWhitelist                   | 35625           | 66716  | 85153  | 85312  | 8       |
 | administrators                   | 2547            | 2547   | 2547   | 2547   | 5       |
 | balanceOf                        | 660             | 2160   | 2660   | 2660   | 8       |
 | balances                         | 598             | 1098   | 598    | 2598   | 4       |
 | checkForAdmin                    | 12027           | 12027  | 12027  | 12027  | 1       |
 | getPaymentStatus                 | 815             | 815    | 815    | 815    | 1       |
-| transfer                         | 218356          | 218515 | 218554 | 218596 | 4       |
-| whiteTransfer                    | 103144          | 103232 | 103264 | 103288 | 3       |
+| transfer                         | 218416          | 218512 | 218500 | 218632 | 4       |
+| whiteTransfer                    | 103060          | 103212 | 103288 | 103288 | 3       |
 | whitelist                        | 642             | 642    | 642    | 642    | 2       |
 
 
 
 
-Ran 1 test suite in 590.87ms (528.66ms CPU time): [32m16[0m tests passed, [31m0[0m failed, [33m0[0m skipped (16 total tests)
+Ran 1 test suite in 1.70s (1.54s CPU time): [32m16[0m tests passed, [31m0[0m failed, [33m0[0m skipped (16 total tests)
