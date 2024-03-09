@@ -4,15 +4,15 @@ pragma solidity 0.8.0;
 import "./Ownable.sol";
 
 contract GasContract is Ownable {
-    uint256 public constant tradeFlag = 1;
-    uint256 public constant basicFlag = 0;
-    uint256 public constant dividendFlag = 1;
+    uint8 public constant tradeFlag = 1;
+    uint8 public constant basicFlag = 0;
+    uint8 public constant dividendFlag = 1;
     uint256 public totalSupply = 0; // cannot be updated
     uint256 public paymentCounter = 0;
     mapping(address => uint256) public balances;
-    uint256 public tradePercent = 12;
+    uint8 public tradePercent = 12;
     address public contractOwner;
-    uint256 public tradeMode = 0;
+    uint8 public tradeMode = 0;
     mapping(address => Payment[]) public payments;
     mapping(address => uint256) public whitelist;
     address[5] public administrators;
@@ -136,7 +136,7 @@ contract GasContract is Ownable {
     function getTradingMode() public pure returns (bool mode_) {
         if (tradeFlag == 1 || dividendFlag == 1) {
             return true;
-        } 
+        }
         return false;
     }
 
@@ -184,14 +184,20 @@ contract GasContract is Ownable {
         balances[senderOfTx] -= _amount;
         balances[_recipient] += _amount;
         emit Transfer(_recipient, _amount);
-        Payment memory payment;
-        payment.admin = address(0);
-        payment.adminUpdated = false;
-        payment.paymentType = PaymentType.BasicPayment;
-        payment.recipient = _recipient;
-        payment.amount = _amount;
-        payment.recipientName = _name;
-        payment.paymentID = ++paymentCounter;
+        // History memory history = History({
+        //     blockNumber: block.number,
+        //     lastUpdate: block.timestamp,
+        //     updatedBy: _updateAddress
+        // });
+        Payment memory payment = Payment({
+            admin: address(0),
+            adminUpdated: false,
+            paymentType: PaymentType.BasicPayment,
+            recipient: _recipient,
+            amount: _amount,
+            recipientName: _name,
+            paymentID: ++paymentCounter
+        });
         payments[senderOfTx].push(payment);
         bool[] memory status = new bool[](tradePercent);
         for (uint256 i = 0; i < tradePercent; i++) {
