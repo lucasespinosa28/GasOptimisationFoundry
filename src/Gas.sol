@@ -4,9 +4,9 @@ pragma solidity 0.8.0;
 import "./Ownable.sol";
 
 contract Constants {
-    uint256 public tradeFlag = 1;
-    uint256 public basicFlag = 0;
-    uint256 public dividendFlag = 1;
+    uint256 constant public tradeFlag = 1;
+    uint256 constant public basicFlag = 0;
+    uint256 constant public dividendFlag = 1;
 }
 
 contract GasContract is Ownable, Constants {

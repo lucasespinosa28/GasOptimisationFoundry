@@ -1,41 +1,47 @@
 Compiling 2 files with 0.8.0
-Solc 0.8.0 finished in 2.38s
-Compiler run [32msuccessful![0m
+Solc 0.8.0 finished in 1.98s
+Compiler run [33msuccessful with warnings:[0m
+[1;33mWarning (2018)[0m[1;37m: Function state mutability can be restricted to pure[0m
+   [34m-->[0m src/Gas.sol:153:5:
+[34m    |[0m
+[34m153 |[0m     [33mfunction getTradingMode() public view returns (bool mode_) {[0m
+[34m    |[0m     [1;33m^ (Relevant source part starts here and spans across multiple lines).[0m
+
 
 Ran 16 tests for test/Gas.UnitTests.t.sol:GasTest
 [32m[PASS][0m testAddHistory() (gas: 233)
-[32m[PASS][0m testAddToWhitelist(address,uint256) (runs: 256, μ: 47741, ~: 47693)
+[32m[PASS][0m testAddToWhitelist(address,uint256) (runs: 256, μ: 47748, ~: 47705)
 [32m[PASS][0m testBalanceOf() (gas: 12313)
 [32m[PASS][0m testCheckForAdmin() (gas: 19660)
 [32m[PASS][0m testGetPaymentHistory() (gas: 212)
 [32m[PASS][0m testGetPaymentStatus(address) (runs: 256, μ: 344, ~: 344)
 [32m[PASS][0m testGetTradingMode() (gas: 210)
-[32m[PASS][0m testTransfer(uint256,address) (runs: 256, μ: 238677, ~: 241441)
-[32m[PASS][0m testWhiteTranferAmountUpdate(address,address,uint256,string,uint256) (runs: 256, μ: 420611, ~: 420523)
+[32m[PASS][0m testTransfer(uint256,address) (runs: 256, μ: 237036, ~: 241423)
+[32m[PASS][0m testWhiteTranferAmountUpdate(address,address,uint256,string,uint256) (runs: 256, μ: 420502, ~: 420520)
 [32m[PASS][0m test_admins() (gas: 36302)
-[32m[PASS][0m test_onlyOwner(address,uint256) (runs: 256, μ: 49305, ~: 49314)
-[32m[PASS][0m test_tiers(address,uint256) (runs: 256, μ: 79838, ~: 79551)
-[32m[PASS][0m test_tiersReverts(address,uint256) (runs: 256, μ: 47412, ~: 47431)
-[32m[PASS][0m test_whitelistEvents(address,address,uint256,string,uint256) (runs: 256, μ: 408236, ~: 411379)
-[32m[PASS][0m test_whitelistEvents(address,uint256) (runs: 256, μ: 82306, ~: 81845)
-[32m[PASS][0m test_whitelistTransfer(address,address,uint256,string,uint256) (runs: 256, μ: 407095, ~: 411382)
-Suite result: [32mok[0m. [32m16[0m passed; [31m0[0m failed; [33m0[0m skipped; finished in 591.18ms (2.25s CPU time)
+[32m[PASS][0m test_onlyOwner(address,uint256) (runs: 256, μ: 49321, ~: 49374)
+[32m[PASS][0m test_tiers(address,uint256) (runs: 256, μ: 80004, ~: 79551)
+[32m[PASS][0m test_tiersReverts(address,uint256) (runs: 256, μ: 47407, ~: 47401)
+[32m[PASS][0m test_whitelistEvents(address,address,uint256,string,uint256) (runs: 256, μ: 406177, ~: 411267)
+[32m[PASS][0m test_whitelistEvents(address,uint256) (runs: 256, μ: 82141, ~: 81845)
+[32m[PASS][0m test_whitelistTransfer(address,address,uint256,string,uint256) (runs: 256, μ: 407734, ~: 411452)
+Suite result: [32mok[0m. [32m16[0m passed; [31m0[0m failed; [33m0[0m skipped; finished in 483.64ms (1.82s CPU time)
 | src/Gas.sol:GasContract contract |                 |        |        |        |         |
 |----------------------------------|-----------------|--------|--------|--------|---------|
 | Deployment Cost                  | Deployment Size |        |        |        |         |
-| 2805179                          | 12700           |        |        |        |         |
+| 2733424                          | 12571           |        |        |        |         |
 | Function Name                    | min             | avg    | median | max    | # calls |
-| addToWhitelist                   | 35625           | 66755  | 85321  | 85321  | 8       |
+| addToWhitelist                   | 35493           | 66743  | 85321  | 85342  | 8       |
 | administrators                   | 2547            | 2547   | 2547   | 2547   | 5       |
 | balanceOf                        | 660             | 2160   | 2660   | 2660   | 8       |
 | balances                         | 598             | 1098   | 598    | 2598   | 4       |
 | checkForAdmin                    | 12027           | 12027  | 12027  | 12027  | 1       |
 | getPaymentStatus                 | 815             | 815    | 815    | 815    | 1       |
-| transfer                         | 218350          | 218560 | 218626 | 218638 | 4       |
-| whiteTransfer                    | 103063          | 103207 | 103279 | 103279 | 3       |
+| transfer                         | 218356          | 218545 | 218590 | 218644 | 4       |
+| whiteTransfer                    | 103096          | 103224 | 103288 | 103288 | 3       |
 | whitelist                        | 642             | 642    | 642    | 642    | 2       |
 
 
 
 
-Ran 1 test suite in 645.60ms (591.18ms CPU time): [32m16[0m tests passed, [31m0[0m failed, [33m0[0m skipped (16 total tests)
+Ran 1 test suite in 547.26ms (483.64ms CPU time): [32m16[0m tests passed, [31m0[0m failed, [33m0[0m skipped (16 total tests)
