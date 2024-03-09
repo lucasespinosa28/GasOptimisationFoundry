@@ -16,7 +16,6 @@ contract GasContract is Ownable {
     mapping(address => Payment[]) public payments;
     mapping(address => uint256) public whitelist;
     address[5] public administrators;
-    bool public isReady = false;
     enum PaymentType {
         Unknown,
         BasicPayment,
@@ -76,19 +75,14 @@ contract GasContract is Ownable {
     }
 
     modifier checkIfWhiteListed(address sender) {
-        address senderOfTx = msg.sender;
         require(
-            senderOfTx == sender,
+            msg.sender == sender,
             "Gas Contract CheckIfWhiteListed modifier : revert happened because the originator of the transaction was not the sender"
         );
-        uint256 usersTier = whitelist[senderOfTx];
+        uint256 usersTier = whitelist[sender];
         require(
-            usersTier > 0,
-            "Gas Contract CheckIfWhiteListed modifier : revert happened because the user is not whitelisted"
-        );
-        require(
-            usersTier < 4,
-            "Gas Contract CheckIfWhiteListed modifier : revert happened because the user's tier is incorrect, it cannot be over 4 as the only tier we have are: 1, 2, 3; therfore 4 is an invalid tier for the whitlist of this contract. make sure whitlist tiers were set correctly"
+            usersTier > 0 && usersTier < 4,
+            "Gas Contract CheckIfWhiteListed modifier : revert happened because the user is not whitelisted or the user's tier is incorrect, it cannot be over 4 as the only tier we have are: 1, 2, 3; therefore 4 is an invalid tier for the whitelist of this contract. Make sure whitelist tiers were set correctly"
         );
         _;
     }
@@ -255,35 +249,34 @@ contract GasContract is Ownable {
     }
 
     function addToWhitelist(
-    address _userAddrs,
-    uint256 _tier
-) public onlyAdminOrOwner {
-    require(
-        _tier < 255,
-        "Gas Contract - addToWhitelist function -  tier level should not be greater than 255"
-    );
-    if (_tier > 3) {
-        whitelist[_userAddrs] = 3;
-    } else if (_tier == 1) {
-        whitelist[_userAddrs] = 1;
-    } else if (_tier > 0 && _tier < 3) {
-        whitelist[_userAddrs] = 2;
-    } else {
-        whitelist[_userAddrs] = _tier;
+        address _userAddrs,
+        uint256 _tier
+    ) public onlyAdminOrOwner {
+        require(
+            _tier < 255,
+            "Gas Contract - addToWhitelist function -  tier level should not be greater than 255"
+        );
+        if (_tier > 3) {
+            whitelist[_userAddrs] = 3;
+        } else if (_tier == 1) {
+            whitelist[_userAddrs] = 1;
+        } else if (_tier > 0 && _tier < 3) {
+            whitelist[_userAddrs] = 2;
+        } else {
+            whitelist[_userAddrs] = _tier;
+        }
+        uint256 wasLastAddedOdd = wasLastOdd;
+        if (wasLastAddedOdd == 1) {
+            wasLastOdd = 0;
+            isOddWhitelistUser[_userAddrs] = wasLastAddedOdd;
+        } else if (wasLastAddedOdd == 0) {
+            wasLastOdd = 1;
+            isOddWhitelistUser[_userAddrs] = wasLastAddedOdd;
+        } else {
+            revert("Contract hacked, imposible, call help");
+        }
+        emit AddedToWhitelist(_userAddrs, _tier);
     }
-    uint256 wasLastAddedOdd = wasLastOdd;
-    if (wasLastAddedOdd == 1) {
-        wasLastOdd = 0;
-        isOddWhitelistUser[_userAddrs] = wasLastAddedOdd;
-    } else if (wasLastAddedOdd == 0) {
-        wasLastOdd = 1;
-        isOddWhitelistUser[_userAddrs] = wasLastAddedOdd;
-    } else {
-        revert("Contract hacked, imposible, call help");
-    }
-    emit AddedToWhitelist(_userAddrs, _tier);
-}
-
 
     function whiteTransfer(
         address _recipient,
