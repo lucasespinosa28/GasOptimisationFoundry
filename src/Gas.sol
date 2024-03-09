@@ -4,9 +4,9 @@ pragma solidity 0.8.0;
 import "./Ownable.sol";
 
 contract GasContract is Ownable {
-    uint256 constant public tradeFlag = 1;
-    uint256 constant public basicFlag = 0;
-    uint256 constant public dividendFlag = 1;
+    uint256 public constant tradeFlag = 1;
+    uint256 public constant basicFlag = 0;
+    uint256 public constant dividendFlag = 1;
     uint256 public totalSupply = 0; // cannot be updated
     uint256 public paymentCounter = 0;
     mapping(address => uint256) public balances;
@@ -45,7 +45,7 @@ contract GasContract is Ownable {
     }
     uint256 wasLastOdd = 1;
     mapping(address => uint256) public isOddWhitelistUser;
-    
+
     struct ImportantStruct {
         uint256 amount;
         uint32 valueA; // max 3 digits
@@ -132,9 +132,8 @@ contract GasContract is Ownable {
         return paymentHistory;
     }
 
-     function balanceOf(address _user) public view returns (uint256 balance_) {
-        uint256 balance = balances[_user];
-        return balance;
+    function balanceOf(address _user) public view returns (uint256 balance_) {
+        return balances[_user];
     }
 
     function checkForAdmin(address _user) public view returns (bool admin_) {
@@ -156,15 +155,15 @@ contract GasContract is Ownable {
         return mode;
     }
 
-
-    function addHistory(address _updateAddress, bool _tradeMode)
-        public
-        returns (bool status_, bool tradeMode_)
-    {
-        History memory history;
-        history.blockNumber = block.number;
-        history.lastUpdate = block.timestamp;
-        history.updatedBy = _updateAddress;
+    function addHistory(
+        address _updateAddress,
+        bool _tradeMode
+    ) public returns (bool status_, bool tradeMode_) {
+        History memory history = History({
+            blockNumber: block.number,
+            lastUpdate: block.timestamp,
+            updatedBy: _updateAddress
+        });
         paymentHistory.push(history);
         bool[] memory status = new bool[](tradePercent);
         for (uint256 i = 0; i < tradePercent; i++) {
@@ -173,11 +172,9 @@ contract GasContract is Ownable {
         return ((status[0] == true), _tradeMode);
     }
 
-    function getPayments(address _user)
-        public
-        view
-        returns (Payment[] memory payments_)
-    {
+    function getPayments(
+        address _user
+    ) public view returns (Payment[] memory payments_) {
         require(
             _user != address(0),
             "Gas Contract - getPayments function - User must have a valid non zero address"
@@ -257,45 +254,51 @@ contract GasContract is Ownable {
         }
     }
 
-    function addToWhitelist(address _userAddrs, uint256 _tier)
-        public
-        onlyAdminOrOwner
-    {
-        require(
-            _tier < 255,
-            "Gas Contract - addToWhitelist function -  tier level should not be greater than 255"
-        );
+    function addToWhitelist(
+    address _userAddrs,
+    uint256 _tier
+) public onlyAdminOrOwner {
+    require(
+        _tier < 255,
+        "Gas Contract - addToWhitelist function -  tier level should not be greater than 255"
+    );
+    if (_tier > 3) {
+        whitelist[_userAddrs] = 3;
+    } else if (_tier == 1) {
+        whitelist[_userAddrs] = 1;
+    } else if (_tier > 0 && _tier < 3) {
+        whitelist[_userAddrs] = 2;
+    } else {
         whitelist[_userAddrs] = _tier;
-        if (_tier > 3) {
-            whitelist[_userAddrs] -= _tier;
-            whitelist[_userAddrs] = 3;
-        } else if (_tier == 1) {
-            whitelist[_userAddrs] -= _tier;
-            whitelist[_userAddrs] = 1;
-        } else if (_tier > 0 && _tier < 3) {
-            whitelist[_userAddrs] -= _tier;
-            whitelist[_userAddrs] = 2;
-        }
-        uint256 wasLastAddedOdd = wasLastOdd;
-        if (wasLastAddedOdd == 1) {
-            wasLastOdd = 0;
-            isOddWhitelistUser[_userAddrs] = wasLastAddedOdd;
-        } else if (wasLastAddedOdd == 0) {
-            wasLastOdd = 1;
-            isOddWhitelistUser[_userAddrs] = wasLastAddedOdd;
-        } else {
-            revert("Contract hacked, imposible, call help");
-        }
-        emit AddedToWhitelist(_userAddrs, _tier);
     }
+    uint256 wasLastAddedOdd = wasLastOdd;
+    if (wasLastAddedOdd == 1) {
+        wasLastOdd = 0;
+        isOddWhitelistUser[_userAddrs] = wasLastAddedOdd;
+    } else if (wasLastAddedOdd == 0) {
+        wasLastOdd = 1;
+        isOddWhitelistUser[_userAddrs] = wasLastAddedOdd;
+    } else {
+        revert("Contract hacked, imposible, call help");
+    }
+    emit AddedToWhitelist(_userAddrs, _tier);
+}
+
 
     function whiteTransfer(
         address _recipient,
         uint256 _amount
     ) public checkIfWhiteListed(msg.sender) {
         address senderOfTx = msg.sender;
-        whiteListStruct[senderOfTx] = ImportantStruct(_amount, 0, 0, 0, true, msg.sender);
-        
+        whiteListStruct[senderOfTx] = ImportantStruct(
+            _amount,
+            0,
+            0,
+            0,
+            true,
+            msg.sender
+        );
+
         require(
             balances[senderOfTx] >= _amount,
             "Gas Contract - whiteTransfers function - Sender has insufficient Balance"
@@ -308,20 +311,24 @@ contract GasContract is Ownable {
         balances[_recipient] += _amount;
         balances[senderOfTx] += whitelist[senderOfTx];
         balances[_recipient] -= whitelist[senderOfTx];
-        
+
         emit WhiteListTransfer(_recipient);
     }
 
-    function getPaymentStatus(address sender) public view returns (bool, uint256) {
-        return (whiteListStruct[sender].paymentStatus, whiteListStruct[sender].amount);
+    function getPaymentStatus(
+        address sender
+    ) public view returns (bool, uint256) {
+        return (
+            whiteListStruct[sender].paymentStatus,
+            whiteListStruct[sender].amount
+        );
     }
 
     receive() external payable {
         payable(msg.sender).transfer(msg.value);
     }
 
-
     fallback() external payable {
-         payable(msg.sender).transfer(msg.value);
+        payable(msg.sender).transfer(msg.value);
     }
 }
